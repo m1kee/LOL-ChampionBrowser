@@ -201,6 +201,13 @@
 			</tbody>
 		</table>
 
+		<div class="row" id="footer">
+			<div class="col-12">
+				<p style="text-align: center; color: white;"> <i> Version 1.0.0 </i> </p>	
+			</div>
+		</div>
+		
+
 	<!-- <div class="card-columns">
 	</div> -->
 
