@@ -137,11 +137,14 @@
 				async: false,
 				success : function(data) {
 					var body = $("body");
+					var descarga_imagen = $("#descarga_imagen");
 					body.css('background-image', "url(http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + data.key + "_0.jpg)");
 					body.css('background-repeat', 'no-repeat');
 					body.css('background-size', '100% 100%');
 					body.css('background-attachment', 'fixed');
 					body.css('background-position', 'center');
+
+					descarga_imagen.attr('href','http://ddragon.leagueoflegends.com/cdn/img/champion/splash/' + data.key + '_0.jpg');
 
 				},
 				error: function(error) {
@@ -176,10 +179,18 @@
 <body>
 
 	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				
+			</div>
+		</div>
 		<br>
 		<div class="row">
-			<div class="col-4 offset-4">
+			<div class="col-4 offset-3">
 				<input type="text" id="txt_nombreCampeon" data-provide="typeahead" class="form-control" placeholder="Ingresa el Nombre del Campeón">
+			</div>
+			<div class="col-2">
+				<a id="descarga_imagen" href="#" download class="btn btn-success"> Descarga Wallpaper </a>
 			</div>
 		</div>
 
