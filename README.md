@@ -1,5 +1,5 @@
 # LOL-ChampionBrowser
-Obtiene Los Campeones de League of Legends usando la API Rest de RiotGames
+Obtiene los Campeones de League of Legends usando la API Rest de RiotGames.
 
 * Selecciona el campeón que desees y mira como se cambia el fondo de pantalla.
 
