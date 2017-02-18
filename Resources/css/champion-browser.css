@@ -1,0 +1,19 @@
+body {
+	font-family: 'Roboto', sans-serif;
+}
+
+/*darle el estilo de letra al placeholder de los input*/
+input::-webkit-input-placeholder {
+	font-family: 'Roboto', sans-serif;
+}
+input:-moz-placeholder {
+  	font-family: 'Roboto', sans-serif;
+}
+input:-ms-input-placeholder { 
+  	font-family: 'Roboto', sans-serif;
+}
+
+/* Hace que el cursor haga parecer que se pueda hacer click sobre el objeto que tenga esta clase */
+.clickable {
+	cursor: pointer;
+}
