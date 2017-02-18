@@ -20,7 +20,9 @@
 
 	<script>
 		$(function(){
+			// obtenemos los campeones y sus imagenes de avatar
 			obtenerCampeones("image");	
+			// llamamos a la funcion buscar campeon, la cual muestra los campeones en la grilla
 			buscarCampeon("");
 
 			// obtengo el id del primer campeon en la lista
@@ -29,6 +31,7 @@
 			// selecciona al primer campeon de la lista como el primer fondo de pantalla
 			cambiaFondo(id_primerRow);
 
+			// al hacer algun cambio en el cuadro de texto, este actualizara la lista
 			$("#txt_nombreCampeon").keyup(function(){
 				var nombreCampeon = $("#txt_nombreCampeon");
 				buscarCampeon(nombreCampeon.val());
