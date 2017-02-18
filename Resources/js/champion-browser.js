@@ -62,7 +62,7 @@ function buscarCampeon(nombreCampeon)
 				titulo = primerLetraMayuscula(value[1].title);
 				id = value[1].id;
 
-				tr += "<tr onclick='javascript:cambiaFondo(" + id + ")' id='" + id + "' class=\"clickable\"> <td style='text-align: center;'>" + img + "</td> <td>" + nombre + "</td> <td>" + titulo + "</td> </tr>";
+				tr += "<tr onclick='javascript:cambiaFondo(" + id + ")' id='" + id + "' class=\"clickable\"> <td style='text-align: center;'>" + img + "</td> <td style=\"vertical-align: middle;\">" + nombre + "</td> <td style=\"vertical-align: middle;\">" + titulo + "</td> </tr>";
 				
 				cantidad++;
 			}
@@ -81,7 +81,7 @@ function buscarCampeon(nombreCampeon)
 			titulo = primerLetraMayuscula(value[1].title);
 			id = value[1].id;
 
-			tr += "<tr onclick='javascript:cambiaFondo(" + id + ")' id='" + id + "' class=\"clickable\"> <td style='text-align: center;'>" + img + "</td> <td>" + nombre + "</td> <td>" + titulo + "</td> </tr>";
+			tr += "<tr onclick='javascript:cambiaFondo(" + id + ")' id='" + id + "' class=\"clickable\"> <td style='text-align: center;'>" + img + "</td> <td style=\"vertical-align: middle;\">" + nombre + "</td> <td style=\"vertical-align: middle;\">" + titulo + "</td> </tr>";
 			cantidad++;
 		});
 	}
@@ -107,7 +107,6 @@ function cambiaFondo(id)
 			body.css('background-position', 'center');
 
 			descarga_imagen.attr('href', url_splashArt + data.key + '_0.jpg');
-
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			$(".modal-title").html('Ups...');
