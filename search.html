@@ -5,15 +5,19 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Búsqueda de Campeones</title>
 
+	<!-- Ícono de la página -->
 	<link rel="shortcut icon" type="image/png" href="favicon.ico"/>
 
+	<!-- Incluímos lo necesario para utilizar Bootstrap 4 Alpha -->
 	<link rel="stylesheet" type="text/css" href="Resources/css/bootstrap.min.css">
 	<script src="Resources/js/tether.min.js" type="text/javascript"></script>
 	<script src="Resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
-	
 	<script src="Resources/js/bootstrap.min.js" type="text/javascript"></script>
 
+	<!-- Importamos Roboto de Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+	<!-- Estilos y Javascripts de la página -->
 	<link rel="stylesheet" type="text/css" href="Resources/css/champion-browser.css">
 	<script src="Resources/js/utilities.js" type="text/javascript"></script>	
 	<script src="Resources/js/champion-browser.js" type="text/javascript"></script>
@@ -24,7 +28,6 @@
 
 	<script>
 		$(function(){
-			
 			// obtenemos los campeones y sus imagenes de avatar
 			obtenerCampeones("image");	
 			// llamamos a la funcion buscar campeon, la cual muestra los campeones en la grilla
@@ -34,7 +37,7 @@
 			let id_primerRow = $("#t_body tr").prop('id');
 
 			// selecciona al primer campeon de la lista como el primer fondo de pantalla
-			cambiaFondo(id_primerRow);
+			setFondo(id_primerRow);
 
 			// al hacer algun cambio en el cuadro de texto, este actualizara la lista
 			$("#txt_nombreCampeon").keyup(function(){
@@ -42,10 +45,14 @@
 				buscarCampeon(nombreCampeon.val());
 			})
 
-			// esta es la forma que me funciono para poder instanciar los tooltips
+			// Instanciamos los tooltips
 			$('[data-toggle="tooltip"]').tooltip();   
+			// Instanciamos los Popovers
+			$('body').popover({
+			    selector: '[rel="popover"]',
+			    trigger: 'hover'
+			});
 		});
-
 	</script>
 </head>
 <body>
@@ -58,13 +65,13 @@
 		<br>
 		<div class="row">
 			<div class="col-4 offset-3">
-				<input type="text" id="txt_nombreCampeon" data-provide="typeahead" class="form-control" placeholder="Ingresa el Nombre del Campeón">
+				<input type="text" id="txt_nombreCampeon" data-provide="typeahead" class="form-control" placeholder="Ingresa el Nombre del Campeón" maxlength="20">
 			</div>
 			<div class="col-2">
 				<a id="descarga_imagen" href="#" download class="btn btn-success"> Descargar Wallpaper </a> 
 			</div>
 			<div class="col" style="vertical-align: baseline;">
-				<i class="fa fa-question-circle fa-2x fa-pull-right" style="color: white;" aria-hidden="true" rel="tooltip" data-toggle="tooltip" data-placement="left" title="Al presionar el botón 'Descargar Wallpaper' se descargará el wallpaper que este de fondo de pantalla."></i>
+				<i class="fa fa-question-circle fa-2x fa-pull-right" style="color: white;" aria-hidden="true" rel="tooltip" data-toggle="tooltip" data-placement="left" title="Al presionar el botón &quot;Descargar Wallpaper&quot; se descargará el wallpaper que este de fondo de pantalla."></i>
 			</div>
 		</div>
 
@@ -75,8 +82,6 @@
 		<table id="tb_campeones" class="table table-hover table-inverse" style="opacity: 0.8;">
 			<thead>
 				<tr>
-					<!-- <th style="width: 10%;">ID</th> -->
-					<!-- <th style="width: 5%;">Avatar</th> -->
 					<th style="width: 15%;" colspan="2">Campeón</th>
 					<th style="width: 80%;">Titulo</th>
 				</tr>
@@ -88,13 +93,14 @@
 
 		<div class="row" id="footer">
 			<div class="col-12">
-				<p style="text-align: center; color: white;"> <i> Version 1.0.1 </i> </p>	
+				<p style="text-align: center; color: white;"> <i> <script> showVersion(); </script> </i> </p>	
 			</div>
 		</div>
 	</div>
 
+	<!-- Incluír en todas las páginas que se desee mostrar mensajes en ventanas modales -->
 	<div class="modal fade">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title"></h5>
@@ -103,7 +109,6 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>

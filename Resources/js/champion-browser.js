@@ -16,6 +16,9 @@ var url_masteries = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/mastery/";
 var url_runes = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/rune/"; // recibe el id de la runa ej: 8001.png
 var url_scoreBoards = "http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/"; // recibe champion, gold, items, minion, score, spells y formato png ej: champion.png
 
+// versión actual de la web
+var version = "Versión 1.0.2";
+
 
 
 // Obtenemos la lista de todos los campeones del juego, junto con su respectivo champData y los metemos en la variable global listaCampeones
@@ -40,18 +43,20 @@ function obtenerCampeones(champData){
 // Obtiene el o los campeones que corresponda segun texto ingresado
 function buscarCampeon(nombreCampeon)
 {
-	var t_body = $("#t_body");
-	var cantidadRegistros = $("#span_cantidadRegistros");
+	let t_body = $("#t_body");
+	let cantidadRegistros = $("#span_cantidadRegistros");
 
-	var cantidad = 0;
-	var tr = "";
-	var cards = "";
+	// instanciamos la cantidad en cero para poder contar cuantos campeones son los que se filtran
+	let cantidad = 0;
+	let tr = "";
 
-	var img;
-	var nombre;
-	var titulo;
-	var id;
+	// variables para contener la informacion de cada uno de los campeones
+	let img;
+	let nombre;
+	let titulo;
+	let id;
 
+	// si el nombre del campeon no viene vacio, aplicamos los filtros
 	if(nombreCampeon != "")
 	{
 		$.each(listaCampeones.data, function(index, value){
@@ -62,17 +67,23 @@ function buscarCampeon(nombreCampeon)
 				titulo = primerLetraMayuscula(value[1].title);
 				id = value[1].id;
 
-				tr += "<tr onclick='javascript:cambiaFondo(" + id + ")' id='" + id + "' class=\"clickable\"> <td style='text-align: center;'>" + img + "</td> <td style=\"vertical-align: middle;\">" + nombre + "</td> <td style=\"vertical-align: middle;\">" + titulo + "</td> </tr>";
+				tr += "<tr onclick='javascript:detalleCampeon(" + id + ")' id='" + id + "' class=\"clickable\"> ";
+				tr += "<td style='text-align: center;'>" + img + "</td>";
+				tr += "<td style=\"vertical-align: middle;\">" + nombre + "</td>";
+				tr += "<td style=\"vertical-align: middle;\">" + titulo + "</td>";
+				tr += "</tr>";
 				
 				cantidad++;
 			}
 		});
 
+		// en caso de no encontrar ningun campeón, desplegamos un mensaje especial.
 		if(cantidad == 0)
 		{
 			tr += "<tr> <td colspan=\"3\" style=\"text-align: center;\"> No se encontraron coincidencias. </td> </tr>";
 		}
 	}
+	// si no, mostramos todos los campeones del juego
 	else
 	{
 		$.each(listaCampeones.data, function(index, value){
@@ -81,26 +92,169 @@ function buscarCampeon(nombreCampeon)
 			titulo = primerLetraMayuscula(value[1].title);
 			id = value[1].id;
 
-			tr += "<tr onclick='javascript:cambiaFondo(" + id + ")' id='" + id + "' class=\"clickable\"> <td style='text-align: center;'>" + img + "</td> <td style=\"vertical-align: middle;\">" + nombre + "</td> <td style=\"vertical-align: middle;\">" + titulo + "</td> </tr>";
+			tr += "<tr onclick='javascript:detalleCampeon(" + id + ")' id='" + id + "' class=\"clickable\"> ";
+			tr += "<td style='text-align: center;'>" + img + "</td>";
+			tr += "<td style=\"vertical-align: middle;\">" + nombre + "</td>";
+			tr += "<td style=\"vertical-align: middle;\">" + titulo + "</td>";
+			tr += "</tr>";
+
 			cantidad++;
 		});
 	}
 
+	// asignamos la cantidad de campeones filtrados, para mostrarle al usuario una cantidad
 	cantidadRegistros.html(cantidad);
+	// y le asociamos a la tabla los rows correspondientes
 	t_body.html(tr);
 }
 
 // funcion que cambia el fondo de pantalla segun el id del campeon seleccionado
-function cambiaFondo(id)
+function detalleCampeon(id)
 {
+	// primero obtenemos la informacion de las skins del campeon gracias a su id
 	$.ajax({
-		url : url_champion + "/" + id + "?champData=skins&api_key=" + key,
+		url : url_champion + "/" + id + "?locale=" + locale + "&champData=all&api_key=" + key,
 		type : "get",
 		async: false,
 		success : function(data) {
-			var body = $("body");
-			var descarga_imagen = $("#descarga_imagen");
-			body.css('background-image', "url(" + url_splashArt + data.key + "_0.jpg)");
+			// en caso de obtener una respuesta correcta desde RIOT GAMES, asignamos la imagen del campeon al fondo de la pantalla
+			// y ademas el botón permitirá al usuario descargar dicha imagen.
+			let body = $("body");
+			let descarga_imagen = $("#descarga_imagen");
+			let nombreCampeon = data.key;
+			let skins = data.skins;
+			let info = data.info;
+			let lore = data.lore;
+			let stats = data.stats;
+			let tags = data.tags;
+			let title = data.title;
+			let spells = data.spells;
+			let pasiva = data.passive;
+			let allyTips = data.allytips;
+			let enemyTips = data.enemytips;
+
+			body.css('background-image', "url(" + url_splashArt + nombreCampeon + "_0.jpg)");
+			body.css('background-repeat', 'no-repeat');
+			body.css('background-size', '100% 100%');
+			body.css('background-attachment', 'fixed');
+			body.css('background-position', 'center');
+
+			let modalTitle = primerLetraMayuscula(nombreCampeon) + " - " + primerLetraMayuscula(title);
+			$.each(tags, function(index, value){
+				modalTitle += "&nbsp;&nbsp;&nbsp;<span class=\"badge badge-primary\">" + value + "</span>&nbsp;";
+			});
+
+			let cuerpoModal = "";
+
+			// Cuerpo modal
+			cuerpoModal += "<div class=\"row\">";
+
+			cuerpoModal += "<div class=\"col-2\">";
+			cuerpoModal += "<img src='" + url_loadingScreenArt + nombreCampeon + "_0.jpg" + "' alt=\"nombreCampeon\" style=\"width: 100%; height: auto;\">";
+			cuerpoModal += "<p style=\"text-align: center;\"><i>Skin por defecto</i></p>";
+			cuerpoModal += "</div>";
+
+			cuerpoModal += "<div class=\"col-10\">";
+
+			// Stats - Habilidades
+			cuerpoModal += "<div class=\"row\">";
+
+			// Stats
+			cuerpoModal += "<div class=\"col-3\">";
+			cuerpoModal += "<span>Ataque: </span>";
+			cuerpoModal += "<div class=\"progress\">";
+			cuerpoModal += "<div class=\"progress-bar bg-success progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.attack + "0%\" aria-valuenow=\"" + info.attack + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.attack + "</div>";
+			cuerpoModal += "</div>";
+			cuerpoModal += "<span>Defensa: </span>";
+			cuerpoModal += "<div class=\"progress\">";
+			cuerpoModal += "<div class=\"progress-bar bg-warning progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.defense + "0%\" aria-valuenow=\"" + info.defense + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.defense + "</div>";
+			cuerpoModal += "</div>";
+			cuerpoModal += "<span>Magia: </span>";
+			cuerpoModal += "<div class=\"progress\">";
+			cuerpoModal += "<div class=\"progress-bar bg-info progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.magic + "0%\" aria-valuenow=\"" + info.magic + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.magic + "</div>";
+			cuerpoModal += "</div>";
+			cuerpoModal += "<span>Dificultad: </span>";
+			cuerpoModal += "<div class=\"progress\">";
+			cuerpoModal += "<div class=\"progress-bar bg-danger progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.difficulty + "0%\" aria-valuenow=\"" + info.difficulty + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.difficulty + "</div>";
+			cuerpoModal += "</div>";
+			cuerpoModal += "</div>";
+			// Fin Stats
+
+			// Habilidades
+			cuerpoModal += "<div class=\"col-9\">";
+			cuerpoModal += "<span>Habilidades: &nbsp;&nbsp;</span>";
+			// pasiva
+			cuerpoModal += "<img src='" + url_passive + pasiva.image.full + "' class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + pasiva.name + "</b>' data-content='" + pasiva.description + "' />&nbsp;&nbsp;";
+			$.each(spells, function(index, value){
+				cuerpoModal += "<img src='" + url_spells + value.image.full + "' class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + value.name + "</b>' data-content='" + value.description + " <br/> <b>Enfriamiento: &nbsp;&quot;</b>" + value.cooldownBurn + "&nbsp;segs.&quot;' />&nbsp;&nbsp;";
+			});
+			cuerpoModal += "</div>";
+			// Fin Habilidades
+			
+			cuerpoModal += "</div>";
+			// Fin Stats - Habilidades
+			
+			// Salto linea
+			cuerpoModal += "<br/>";
+
+			// Ally Tips
+			cuerpoModal += "<span>Consejos<span>";
+			cuerpoModal += "<ul>";
+			$.each(allyTips, function(index, value){
+				cuerpoModal += "<li>" + value + "</li>";
+			});
+			cuerpoModal += "</ul>";
+
+			// Enemy Tips
+			cuerpoModal += "<span>Como jugar contra " + nombreCampeon + "<span>";
+			cuerpoModal += "<ul>";
+			$.each(enemyTips, function(index, value){
+				cuerpoModal += "<li>" + value + "</li>";
+			});
+			cuerpoModal += "</ul>";
+
+			// Lore
+			cuerpoModal += "<h5 style=\"text-align: center;\"><b>Historia</b><h5>";
+			cuerpoModal += "<blockquote class=\"blockquote\">";
+			cuerpoModal += "<p class=\"mb-0\"><small>" + lore + "</small></p>";
+			cuerpoModal += "</blockquote>";
+			// Fin Lore
+
+			cuerpoModal += "</div>";
+
+			cuerpoModal += "</div>";
+			// Fin cuerpo modal
+
+			$(".modal-title").html(modalTitle);
+			$(".modal-body").html(cuerpoModal);
+			$(".modal").modal('show');
+
+			descarga_imagen.attr('href', url_splashArt + data.key + '_0.jpg');
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			$(".modal-title").html('Ups...');
+			$(".modal-body").html('<p><b>Algo ha salido mal :( </b></p><p>Si el error persiste envíe un correo a cb@help.com</p>');
+			$(".modal").modal('show');
+		}
+	});
+}
+
+// funcion que cambia el fondo de pantalla segun el id del campeon
+function setFondo(id)
+{
+	// primero obtenemos la informacion de las skins del campeon gracias a su id
+	$.ajax({
+		url : url_champion + "/" + id + "?locale=" + locale + "&champData=all&api_key=" + key,
+		type : "get",
+		async: false,
+		success : function(data) {
+			// en caso de obtener una respuesta correcta desde RIOT GAMES, asignamos la imagen del campeon al fondo de la pantalla
+			// y ademas el botón permitirá al usuario descargar dicha imagen.
+			let body = $("body");
+			let descarga_imagen = $("#descarga_imagen");
+			let nombreCampeon = data.key;
+
+			body.css('background-image', "url(" + url_splashArt + nombreCampeon + "_0.jpg)");
 			body.css('background-repeat', 'no-repeat');
 			body.css('background-size', '100% 100%');
 			body.css('background-attachment', 'fixed');
@@ -121,3 +275,8 @@ function OrdenarPorNombreAscendente(x,y) {
 	return ((x[0] == y[0]) ? 0 : ((x[0] > y[0]) ? 1 : -1 ));
 }
 
+// function que imprime la version actual de la página
+function showVersion()
+{
+	document.write(version);
+}

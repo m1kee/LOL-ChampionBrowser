@@ -17,3 +17,7 @@ input:-ms-input-placeholder {
 .clickable {
 	cursor: pointer;
 }
+
+.rounded {
+	border-radius: 5px;
+}
