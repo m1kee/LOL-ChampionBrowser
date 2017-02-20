@@ -17,7 +17,7 @@ var url_runes = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/rune/"; // rec
 var url_scoreBoards = "http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/"; // recibe champion, gold, items, minion, score, spells y formato png ej: champion.png
 
 // versión actual de la web
-var version = "Versión 1.0.2";
+var version = "Versión 1.1.0";
 
 
 
