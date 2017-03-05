@@ -1,19 +1,20 @@
 // variables globales 
 var listaCampeones; // contiene la lista completa de campiones de league of legends
-var key = "RGAPI-ab9cb372-e420-4a47-9018-066a36810c31"; // contiene la key para la api de riot games
+var key = "RGAPI-ab9cb372-e420-4a47-9018-066a36810c31"; // contiene la key de desarrollo para la api de riot games
 var locale = "es_ES"; // establece el idioma, en caso de no estar, toma el idioma de la region en la que se encuentra
 var url_champion = "https://global.api.pvp.net/api/lol/static-data/las/v1.2/champion"; // si se le agrega /{id} traerá la información del campeon solicitado
+var url_championFreeToPlay = "https://las.api.pvp.net/api/lol/las/v1.2/champion?freeToPlay=true" + "&api_key=" + key; // url de champs free to play
 
 // url's static data 
-var url_profileIcon = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/profileicon/"; // recibe el id de la imagen y su formato ej: 588.png
+var url_profileIcon = "http://ddragon.leagueoflegends.com/cdn/7.4.3/img/profileicon/"; // recibe el id de la imagen y su formato ej: 588.png
 var url_splashArt = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"; // recibe nombre de campeon y el numero de skin ej: Aatrox_0.jpg 
 var url_loadingScreenArt = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"; // recibe nombre de campeon y el numero de skin ej: Aatrox_0.jpg 
-var url_championSquare = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/champion/"; // recibe el nombre del campeon y su formato ej: Aatrox.png
-var url_passive = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/passive/"; // recibe el nombre de la imagen ej: Anivia_P.png 
-var url_spells = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/spell/"; // recibe el nombre del hechizo con su formato ej: FlashFrost.png o SummonerFlash.png
-var url_items = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/item/"; // recibe el id del item ej: 1001.png -- son las botas 
-var url_masteries = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/mastery/"; // recibe el id de la maestria ej: 6111.png
-var url_runes = "http://ddragon.leagueoflegends.com/cdn/7.3.3/img/rune/"; // recibe el id de la runa ej: 8001.png
+var url_championSquare = "http://ddragon.leagueoflegends.com/cdn/7.4.3/img/champion/"; // recibe el nombre del campeon y su formato ej: Aatrox.png
+var url_passive = "http://ddragon.leagueoflegends.com/cdn/7.2.1/img/passive/"; // recibe el nombre de la imagen ej: Anivia_P.png 
+var url_spells = "http://ddragon.leagueoflegends.com/cdn/7.2.1/img/spell/"; // recibe el nombre del hechizo con su formato ej: FlashFrost.png o SummonerFlash.png
+var url_items = "http://ddragon.leagueoflegends.com/cdn/7.2.1/img/item/"; // recibe el id del item ej: 1001.png -- son las botas 
+var url_masteries = "http://ddragon.leagueoflegends.com/cdn/7.2.1/img/mastery/"; // recibe el id de la maestria ej: 6111.png
+var url_runes = "http://ddragon.leagueoflegends.com/cdn/7.2.1/img/rune/"; // recibe el id de la runa ej: 8001.png
 var url_scoreBoards = "http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/"; // recibe champion, gold, items, minion, score, spells y formato png ej: champion.png
 
 // versión actual de la web
@@ -151,7 +152,7 @@ function detalleCampeon(id)
 
 			cuerpoModal += "<div class=\"col-2\">";
 			cuerpoModal += "<img src='" + url_loadingScreenArt + nombreCampeon + "_0.jpg" + "' alt=\"nombreCampeon\" style=\"width: 100%; height: auto;\">";
-			cuerpoModal += "<p style=\"text-align: center;\"><i>Skin por defecto</i></p>";
+			//cuerpoModal += "<p style=\"text-align: center;\"><i>Skin por defecto</i></p>";
 			cuerpoModal += "</div>";
 
 			cuerpoModal += "<div class=\"col-10\">";
@@ -184,9 +185,9 @@ function detalleCampeon(id)
 			cuerpoModal += "<div class=\"col-9\">";
 			cuerpoModal += "<span>Habilidades: &nbsp;&nbsp;</span>";
 			// pasiva
-			cuerpoModal += "<img src='" + url_passive + pasiva.image.full + "' class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + pasiva.name + "</b>' data-content='" + pasiva.description + "' />&nbsp;&nbsp;";
+			cuerpoModal += "<img src='" + url_passive + pasiva.image.full + "' class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + pasiva.name + "</b>' data-content='" + pasiva.sanitizedDescription + "' />&nbsp;&nbsp;";
 			$.each(spells, function(index, value){
-				cuerpoModal += "<img src='" + url_spells + value.image.full + "' class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + value.name + "</b>' data-content='" + value.description + " <br/> <b>Enfriamiento: &nbsp;&quot;</b>" + value.cooldownBurn + "&nbsp;segs.&quot;' />&nbsp;&nbsp;";
+				cuerpoModal += "<img src='" + url_spells + value.image.full + "' class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + value.name + "</b>' data-content='" + value.sanitizedDescription + " <br/> <b>Enfriamiento: &nbsp;&quot;</b>" + value.cooldownBurn + "&nbsp;segs.&quot;' />&nbsp;&nbsp;";
 			});
 			cuerpoModal += "</div>";
 			// Fin Habilidades
@@ -212,6 +213,15 @@ function detalleCampeon(id)
 				cuerpoModal += "<li>" + value + "</li>";
 			});
 			cuerpoModal += "</ul>";
+			// Fin Tips
+
+			// Skins
+			cuerpoModal += "<h5 style=\"text-align: center;\"><b>Skins</b><h5>";
+			$.each(skins, function(index, value){
+				// data-animation="false" es la forma de arreglar que el modal no se cierra al tener los tooltips
+				cuerpoModal += "<img src='" + url_loadingScreenArt + nombreCampeon + "_" + value.num + ".jpg" + "' alt='" + value.name + "' style=\"width: 128px; height: auto;\" rel=\"tooltip\" role=\"button\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-animation=\"false\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + value.name + "'> &nbsp;&nbsp;";
+			});
+			// Fin Skins
 
 			// Lore
 			cuerpoModal += "<h5 style=\"text-align: center;\"><b>Historia</b><h5>";
@@ -228,6 +238,7 @@ function detalleCampeon(id)
 			$(".modal-title").html(modalTitle);
 			$(".modal-body").html(cuerpoModal);
 			$(".modal").modal('show');
+			$('[rel="tooltip"]').tooltip();
 
 			descarga_imagen.attr('href', url_splashArt + data.key + '_0.jpg');
 		},
@@ -278,5 +289,130 @@ function OrdenarPorNombreAscendente(x,y) {
 // function que imprime la version actual de la página
 function showVersion()
 {
-	document.write(version);
+	return version;
 }
+
+// Funcion que retorna el footer de la página
+function footer()
+{
+	let html = ""; 
+	html += "<div class=\"row\" id=\"footer\">";
+	html += "<div class=\"col-12\">";
+	html +=	"<p style=\"text-align: center; color: white;\"> <i> " + showVersion(); + "</i> </p>";
+	html +=	"</div>";
+	html +=	"</div>"; 
+
+	document.write(html);
+}
+
+// funcion que genera el html de un modal sencillo, con un solo botón para cerrar el modal
+function modal()
+{
+	let html = "";
+	html += "<div class=\"modal fade\">";
+	html += "<div class=\"modal-dialog modal-lg\" role=\"document\">";
+	html += "<div class=\"modal-content\">";
+	html += "<div class=\"modal-header\">";
+	html += "<h5 class=\"modal-title\"></h5>";
+	html += "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
+	html += "<span aria-hidden=\"true\">&times;</span>";
+	html += "</button>";
+	html += "</div>";
+	html += "<div class=\"modal-body\">";
+	html += "</div>";
+	html += "<div class=\"modal-footer\">";
+	html += "<button type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\">Cerrar</button>";
+	html += "</div>";
+	html += "</div>";
+	html += "</div>";
+	html += "</div>";
+
+	document.write(html);
+}
+
+// function que genera el html de la barra de navegacion, el cual recibe el nombre de la pagina en la que se encuentra para indicar que pestaña es la que se encuentra activa
+function navbar(nombrePagina)
+{
+	let html = "";
+	html += "<div class=\"row\">";
+	html += "<div class=\"col-12\">";
+	html += "<span style=\"color: white;\">Coded by Shaauro</span>";
+	html += "</div>";
+	html += "</div>";
+	html += "<nav class=\"navbar navbar-toggleable-md navbar-inverse bg-inverse\">";
+	html += "<button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNavAltMarkup\" aria-controls=\"navbarNavAltMarkup\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">";
+	html += "<span class=\"navbar-toggler-icon\"></span>";
+	html += "</button>";
+	html += "<a class=\"navbar-brand col-2\" href=\"inicio.html\">Champion Browser</a>";
+	html += "<div class=\"collapse navbar-collapse col-3\" id=\"navbarNavAltMarkup\">";
+	html += "<div class=\"navbar-nav\">";
+	html += "<a class=\"nav-item nav-link inicio\" href=\"inicio.html\">Inicio</a>";
+	html += "<a class=\"nav-item nav-link champions\" href=\"champions.html\">Campeones</a>";
+	html += "</div>";
+	html += "</div>";
+	html += "<div class=\"form-inline col-7\">";
+	html += "<select class=\"custom-select col-4\">";
+	html += "<option value=\"br\">Brazil</option>";
+	html += "<option value=\"eune\">EU Nordic & East</option>";
+	html += "<option value=\"euw\">EU West</option>";
+	html += "<option value=\"jp\">Japan</option>";
+	html += "<option value=\"kr\">Korea</option>";
+	html += "<option value=\"lan\">Latin America North</option>";
+	html += "<option value=\"las\" selected>Latin America South</option>";
+	html += "<option value=\"na\">North America</option>";
+	html += "<option value=\"oce\">Oceania</option>";
+	html += "<option value=\"ru\">Russia</option>";
+	html += "<option value=\"tr\">Turkey</option>";
+	html += "</select>";
+	html += "<input class=\"form-control col-6\" type=\"text\" placeholder=\"Nombre Invocador\">";
+	html += "<button class=\"btn btn-outline-success form-control col-2\" type=\"button\">Buscar</button>";
+	html += "</div>";
+	html += "</nav>";
+	html += "<br/>";
+
+	document.write(html);
+
+	// seteamos el link activo
+	$("." + nombrePagina).addClass("active");
+	$("." + nombrePagina).attr('href','#');
+}
+
+// funcion que genera el html de los campones que se encuentran gratuitos
+function rotacionSemanal()
+{
+	let html = "";
+	$.ajax({
+		url: url_championFreeToPlay,
+		type : "get",
+		async: true,
+		success : function(data) {
+			$.each(data.champions, function(index, value){
+				$.ajax({
+					url: url_champion + "/" + value.id + "?locale=" + locale + "&champData=all&api_key=" + key,
+					type: "get",
+					async: false,
+					success: function(campeon){
+						html += "<img src='" + url_championSquare + campeon.key + ".png' class=\"rounded\" style=\"width: 80px; height: auto;\" role=\"button\"  aria-hidden=\"true\" data-toggle=\"tooltip\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + campeon.name + "</b><br/>" + campeon.title + "'/>&nbsp;&nbsp;";
+					}, 
+					error: function(jqXHR, textStatus, errorThrown) {
+						console.log("algo salió mal");
+					}
+				});
+			});
+			$("#campeonesGratuitos").html(html);
+			$('[data-toggle="tooltip"]').tooltip();
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			$(".modal-title").html('Ups...');
+			$(".modal-body").html('<p><b>Algo ha salido mal :( </b></p><p>Si el error persiste envíe un correo a cb@help.com</p>');
+			$(".modal").modal('show');
+		}
+	});
+}
+
+function formatText(text)
+{
+	return text.replace("'", "&quot;");
+}
+
+

@@ -57,12 +57,9 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<span style="color: white;">Coded by Shaauro</span>
-			</div>
-		</div>
-		<br>
+		<script>
+			navbar("champions");
+		</script>
 		<div class="row">
 			<div class="col-4 offset-3">
 				<input type="text" id="txt_nombreCampeon" data-provide="typeahead" class="form-control" placeholder="Ingresa el Nombre del Campeón" maxlength="20">
@@ -91,31 +88,14 @@
 			</tbody>
 		</table>
 
-		<div class="row" id="footer">
-			<div class="col-12">
-				<p style="text-align: center; color: white;"> <i> <script> showVersion(); </script> </i> </p>	
-			</div>
-		</div>
+		<script>
+			footer();
+		</script>
 	</div>
 
-	<!-- Incluír en todas las páginas que se desee mostrar mensajes en ventanas modales -->
-	<div class="modal fade">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title"></h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	<script>
+		modal();
+	</script>
 
 </body>
 </html>

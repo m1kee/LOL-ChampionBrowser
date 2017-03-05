@@ -21,3 +21,8 @@ input:-ms-input-placeholder {
 .rounded {
 	border-radius: 5px;
 }
+
+.card-bg-inverse {
+	background-color: #333; 
+	border-color: #333;
+}
