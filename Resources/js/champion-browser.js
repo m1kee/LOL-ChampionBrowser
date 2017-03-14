@@ -20,12 +20,65 @@ var url_scoreBoards = "http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/"; //
 // versión actual de la web
 var version = "Versión 1.1.0";
 
+// Actualizacion 
+// parche actual del lol
+var lol_current_version;
+var cdn;
+var champion;
+var profileicon;
+var item;
+var sticker;
+var map;
+var mastery;
+var language;
+var summoner;
+var rune;
+
+// obtenemos las versiones para cada uno de los metodos para obtencion de datos de la api de Riot games
+$.ajax({
+	url : "https://global.api.pvp.net/api/lol/static-data/las/v1.2/realm?&api_key=" + key,
+	type : "get",
+	async: false,
+	success : function(data) {
+		lol_current_version = data.v;
+		cdn = data.cdn;
+		champion = data.n.champion;
+		profileicon = data.n.profileicon;
+		item = data.n.item;
+		sticker = data.n.sticker;
+		map = data.n.map;
+		mastery = data.n.mastery;
+		language = data.n.language;
+		summoner = data.n.summoner;
+		rune = data.n.rune;
+
+		url_profileIcon = cdn + "/" + profileicon + "/img/profileicon/";
+		//url_splashArt = cdn + "/" + champion + "/img/champion/splash/"; 
+		//url_loadingScreenArt = cdn + "/" + champion + "/img/champion/loading/"; 
+		url_championSquare = cdn + "/" + champion + "/img/champion/"; 
+		url_passive = cdn + "/" + champion + "/img/passive/"; 
+		url_spells = cdn + "/" + champion + "/img/spell/"; 
+		url_items = cdn + "/" + item + "/img/item/"; 
+		url_masteries = cdn + "/" + mastery + "/img/mastery/"; 
+		url_runes = cdn + "/" + rune + "/img/rune/"; 
+
+
+	},
+	error: function(jqXHR, textStatus, errorThrown) {
+		$(".modal-title").html('Ups...');
+		$(".modal-body").html('<p><b>Algo ha salido mal :( </b></p><p>Si el error persiste envíe un correo a cb@help.com</p>');
+		$(".modal").modal('show');
+	}
+});
+
+// Fin actualizacion
+
 
 
 // Obtenemos la lista de todos los campeones del juego, junto con su respectivo champData y los metemos en la variable global listaCampeones
 function obtenerCampeones(champData){
 	$.ajax({
-		url : url_champion + "?locale=" + locale +  "&champData=" + champData + "&api_key=" + key,
+		url : url_champion + "?locale=" + locale +  "&champData=" + champData + "&version=" + champion + "&api_key=" + key,
 		type : "get",
 		async: false,
 		success : function(data) {
@@ -114,7 +167,7 @@ function detalleCampeon(id)
 {
 	// primero obtenemos la informacion de las skins del campeon gracias a su id
 	$.ajax({
-		url : url_champion + "/" + id + "?locale=" + locale + "&champData=all&api_key=" + key,
+		url : url_champion + "/" + id + "?locale=" + locale + "&version=" + champion + "&champData=all&api_key=" + key,
 		type : "get",
 		async: false,
 		success : function(data) {
@@ -122,7 +175,8 @@ function detalleCampeon(id)
 			// y ademas el botón permitirá al usuario descargar dicha imagen.
 			let body = $("body");
 			let descarga_imagen = $("#descarga_imagen");
-			let nombreCampeon = data.key;
+			let nombreCampeon = data.name;
+			let ChampKey = data.key;
 			let skins = data.skins;
 			let info = data.info;
 			let lore = data.lore;
@@ -134,7 +188,7 @@ function detalleCampeon(id)
 			let allyTips = data.allytips;
 			let enemyTips = data.enemytips;
 
-			body.css('background-image', "url(" + url_splashArt + nombreCampeon + "_0.jpg)");
+			body.css('background-image', "url(" + url_splashArt + ChampKey + "_0.jpg)");
 			body.css('background-repeat', 'no-repeat');
 			body.css('background-size', '100% 100%');
 			body.css('background-attachment', 'fixed');
@@ -151,7 +205,7 @@ function detalleCampeon(id)
 			cuerpoModal += "<div class=\"row\">";
 
 			cuerpoModal += "<div class=\"col-2\">";
-			cuerpoModal += "<img src='" + url_loadingScreenArt + nombreCampeon + "_0.jpg" + "' alt=\"nombreCampeon\" style=\"width: 100%; height: auto;\">";
+			cuerpoModal += "<img src='" + url_loadingScreenArt + ChampKey + "_0.jpg" + "' alt=\"" + nombreCampeon + "\" style=\"width: 100%; height: auto;\">";
 			//cuerpoModal += "<p style=\"text-align: center;\"><i>Skin por defecto</i></p>";
 			cuerpoModal += "</div>";
 
@@ -185,9 +239,9 @@ function detalleCampeon(id)
 			cuerpoModal += "<div class=\"col-9\">";
 			cuerpoModal += "<span>Habilidades: &nbsp;&nbsp;</span>";
 			// pasiva
-			cuerpoModal += "<img src='" + url_passive + pasiva.image.full + "' class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + pasiva.name + "</b>' data-content='" + pasiva.sanitizedDescription + "' />&nbsp;&nbsp;";
+			cuerpoModal += "<img src=\"" + url_passive + pasiva.image.full + "\" class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title=\"<b>" + pasiva.name + "</b>\" data-content=\"" + pasiva.sanitizedDescription + "\" />&nbsp;&nbsp;";
 			$.each(spells, function(index, value){
-				cuerpoModal += "<img src='" + url_spells + value.image.full + "' class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + value.name + "</b>' data-content='" + value.sanitizedDescription + " <br/> <b>Enfriamiento: &nbsp;&quot;</b>" + value.cooldownBurn + "&nbsp;segs.&quot;' />&nbsp;&nbsp;";
+				cuerpoModal += "<img src=\"" + url_spells + value.image.full + "\" class=\"rounded\" aria-hidden=\"true\" rel=\"popover\" role=\"button\" data-html=\"true\" data-placement=\"bottom\" title=\"<b>" + value.name + "</b>\" data-content=\"" + value.sanitizedDescription + " <br/> <b>Enfriamiento: &nbsp;&quot;</b>" + value.cooldownBurn + "&nbsp;segs.&quot;\" />&nbsp;&nbsp;";
 			});
 			cuerpoModal += "</div>";
 			// Fin Habilidades
@@ -219,7 +273,15 @@ function detalleCampeon(id)
 			cuerpoModal += "<h5 style=\"text-align: center;\"><b>Skins</b><h5>";
 			$.each(skins, function(index, value){
 				// data-animation="false" es la forma de arreglar que el modal no se cierra al tener los tooltips
-				cuerpoModal += "<img src='" + url_loadingScreenArt + nombreCampeon + "_" + value.num + ".jpg" + "' alt='" + value.name + "' style=\"width: 128px; height: auto;\" rel=\"tooltip\" role=\"button\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-animation=\"false\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + value.name + "'> &nbsp;&nbsp;";
+				if(value.name == "default")
+				{
+					cuerpoModal += "<img src=\"" + url_loadingScreenArt + ChampKey + "_" + value.num + ".jpg" + "\" alt=\"" + value.name + "\" style=\"width: 128px; height: auto;\" rel=\"tooltip\" role=\"button\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-animation=\"false\" data-html=\"true\" data-placement=\"bottom\" title=\"<b>" + nombreCampeon + "\"> &nbsp;&nbsp;";					
+				}
+				else
+				{
+					cuerpoModal += "<img src=\"" + url_loadingScreenArt + ChampKey + "_" + value.num + ".jpg" + "\" alt=\"" + value.name + "\" style=\"width: 128px; height: auto;\" rel=\"tooltip\" role=\"button\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-animation=\"false\" data-html=\"true\" data-placement=\"bottom\" title=\"<b>" + value.name + "\"> &nbsp;&nbsp;";
+				}
+				
 			});
 			// Fin Skins
 
@@ -240,7 +302,7 @@ function detalleCampeon(id)
 			$(".modal").modal('show');
 			$('[rel="tooltip"]').tooltip();
 
-			descarga_imagen.attr('href', url_splashArt + data.key + '_0.jpg');
+			descarga_imagen.attr('href', url_splashArt + ChampKey + '_0.jpg');
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			$(".modal-title").html('Ups...');
@@ -271,7 +333,7 @@ function setFondo(id)
 			body.css('background-attachment', 'fixed');
 			body.css('background-position', 'center');
 
-			descarga_imagen.attr('href', url_splashArt + data.key + '_0.jpg');
+			descarga_imagen.attr('href', url_splashArt + nombreCampeon + '_0.jpg');
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			$(".modal-title").html('Ups...');
@@ -289,7 +351,7 @@ function OrdenarPorNombreAscendente(x,y) {
 // function que imprime la version actual de la página
 function showVersion()
 {
-	return version;
+	return "Versión " + lol_current_version;
 }
 
 // Funcion que retorna el footer de la página
@@ -298,7 +360,7 @@ function footer()
 	let html = ""; 
 	html += "<div class=\"row\" id=\"footer\">";
 	html += "<div class=\"col-12\">";
-	html +=	"<p style=\"text-align: center; color: white;\"> <i> " + showVersion(); + "</i> </p>";
+	html +=	"<p style=\"text-align: center; color: white;\"> <i>" + showVersion(); + "</i> </p>";
 	html +=	"</div>";
 	html +=	"</div>"; 
 
@@ -392,7 +454,7 @@ function rotacionSemanal()
 					type: "get",
 					async: false,
 					success: function(campeon){
-						html += "<img src='" + url_championSquare + campeon.key + ".png' class=\"rounded\" style=\"width: 80px; height: auto;\" role=\"button\"  aria-hidden=\"true\" data-toggle=\"tooltip\" data-html=\"true\" data-placement=\"bottom\" title='<b>" + campeon.name + "</b><br/>" + campeon.title + "'/>&nbsp;&nbsp;";
+						html += "<img src='" + url_championSquare + campeon.key + ".png' class=\"rounded\" style=\"width: 80px; height: auto;\" role=\"button\"  aria-hidden=\"true\" data-toggle=\"tooltip\" data-html=\"true\" data-placement=\"bottom\" title=\"<b>" + campeon.name + "</b><br/>" + campeon.title + "\"/>&nbsp;&nbsp;";
 					}, 
 					error: function(jqXHR, textStatus, errorThrown) {
 						console.log("algo salió mal");
