@@ -11,8 +11,6 @@
 	<link rel="stylesheet" type="text/css" href="Resources/css/bootstrap.min.css">
 	<script src="Resources/js/tether.min.js" type="text/javascript"></script>
 	<script src="Resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
-	<script src="Resources/js/jquery.xmlrpc.min.js" type="text/javascript"></script>
-	<script src="Resources/js/mimic.js" type="text/javascript"></script>
 	<script src="Resources/js/bootstrap.min.js" type="text/javascript"></script>
 
 	<!-- Importamos Roboto de Google Fonts -->
@@ -44,8 +42,8 @@
 </head>
 <body>
 	<div class="container">
-		<script type="text/javascript">
-			navbar('index');
+		<script>
+			navbar("inicio");
 		</script>
 
 		<div class="card card-inverse card-bg-inverse">
@@ -64,29 +62,24 @@
 			<div class="card-block">
 				<h3 class="card-title"> <b> Streams Twitch </b> </h3>
 				<div>
-					<!-- <iframe
+					<iframe
 					    src="http://player.twitch.tv/?channel=imaqtpie&muted=true"
 					    height="720"
 					    width="100%"
 					    frameborder="0"
 					    scrolling="no"
 					    allowfullscreen="true">
-					</iframe> -->
+					</iframe>
 				</div>	
 			</div>
 		</div>
 
-		<!-- Script para llamar al footer de la página -->
-		<script type="text/javascript">
+		<script>
 			footer();
 		</script>
-
 	</div>
-
-	<!-- Script para instanciar el modal a ser utilizado dentro de la página -->
-	<script type="text/javascript"> 
+	<script> 
 		modal();
 	</script>
-
 </body>
 </html>

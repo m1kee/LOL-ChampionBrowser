@@ -26,8 +26,3 @@ input:-ms-input-placeholder {
 	background-color: #333; 
 	border-color: #333;
 }
-
-.danger{
-	/* este border color, es el mismo que el que provee boostrap */
-	border-color: #d9534f; 
-}

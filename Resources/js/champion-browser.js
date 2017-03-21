@@ -508,40 +508,18 @@ function obtieneIdInvocador()
 		$("#txt_nombreInvocador").tooltip('hide');
 
 		
-		
-		$.ajax({
-			url: url_invocador_by_name + formatURLText(nombreInvocador) + '?api_key=' + key,
-			type: 'get',
-			dataType: 'xml',
-			success : function(data) {
-				data = $.xmlrpc.parseDocument(data);
-				console.log(data);
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				switch (jqXHR.status)
-				{
-					case 404: 
-						$(".modal-title").html('Ups...');
-						$(".modal-body").html('<p>No hay ningun invocador con ese nombre.</p>');
-						$(".modal").modal('show');
-						break;
-					case 200: 
-						$(".modal-title").html('Ups...');
-						$(".modal-body").html('<p>Parse Error.</p>');
-						$(".modal").modal('show');
-						break;
-					default:
-						$(".modal-title").html('Ups...');
-						$(".modal-body").html('<p>Error Desconocido.</p>');
-						$(".modal").modal('show');
-						break;
-				}
-
-				console.log(jqXHR);
-				console.log("textStatus: " + textStatus);
-				console.log("errorThrown: " + errorThrown);
-
-			}
+		$.getJSON(url_invocador_by_name + formatURLText(nombreInvocador) + '?api_key=' + key, function(result){
+			//el result tira la data que vendría siendo del success
+			console.log(result);
+		}).done(function(data){
+			//acá igual pero no cacho la diferencia ajsajsd
+			console.log(data);
+		}).fail(function(error){
+			//aquí te atrapa los errores
+			console.log(error);
+			$(".modal-title").html('Ups...');
+			$(".modal-body").html('<p>No hay ningun invocador con ese nombre.</p>');
+			$(".modal").modal('show');
 		});
 	}
 	else
