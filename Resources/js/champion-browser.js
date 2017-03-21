@@ -17,6 +17,8 @@ var url_masteries = "http://ddragon.leagueoflegends.com/cdn/7.2.1/img/mastery/";
 var url_runes = "http://ddragon.leagueoflegends.com/cdn/7.2.1/img/rune/"; // recibe el id de la runa ej: 8001.png
 var url_scoreBoards = "http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/"; // recibe champion, gold, items, minion, score, spells y formato png ej: champion.png
 
+var url_invocador_by_name = "https://las.api.pvp.net/api/lol/LAS/v1.4/summoner/by-name/"; // se agrega el nombre del campeon, y la key como query string
+
 // versión actual de la web
 var version = "Versión 1.1.0";
 
@@ -53,8 +55,6 @@ $.ajax({
 		rune = data.n.rune;
 
 		url_profileIcon = cdn + "/" + profileicon + "/img/profileicon/";
-		//url_splashArt = cdn + "/" + champion + "/img/champion/splash/"; 
-		//url_loadingScreenArt = cdn + "/" + champion + "/img/champion/loading/"; 
 		url_championSquare = cdn + "/" + champion + "/img/champion/"; 
 		url_passive = cdn + "/" + champion + "/img/passive/"; 
 		url_spells = cdn + "/" + champion + "/img/spell/"; 
@@ -218,19 +218,19 @@ function detalleCampeon(id)
 			cuerpoModal += "<div class=\"col-3\">";
 			cuerpoModal += "<span>Ataque: </span>";
 			cuerpoModal += "<div class=\"progress\">";
-			cuerpoModal += "<div class=\"progress-bar bg-success progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.attack + "0%\" aria-valuenow=\"" + info.attack + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.attack + "</div>";
+			cuerpoModal += "<div class=\"progress-bar bg-success progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.attack + "0%\" aria-valuenow=\"" + info.attack + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.attack + "</div>";
 			cuerpoModal += "</div>";
 			cuerpoModal += "<span>Defensa: </span>";
 			cuerpoModal += "<div class=\"progress\">";
-			cuerpoModal += "<div class=\"progress-bar bg-warning progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.defense + "0%\" aria-valuenow=\"" + info.defense + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.defense + "</div>";
+			cuerpoModal += "<div class=\"progress-bar bg-warning progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.defense + "0%\" aria-valuenow=\"" + info.defense + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.defense + "</div>";
 			cuerpoModal += "</div>";
 			cuerpoModal += "<span>Magia: </span>";
 			cuerpoModal += "<div class=\"progress\">";
-			cuerpoModal += "<div class=\"progress-bar bg-info progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.magic + "0%\" aria-valuenow=\"" + info.magic + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.magic + "</div>";
+			cuerpoModal += "<div class=\"progress-bar bg-info progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.magic + "0%\" aria-valuenow=\"" + info.magic + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.magic + "</div>";
 			cuerpoModal += "</div>";
 			cuerpoModal += "<span>Dificultad: </span>";
 			cuerpoModal += "<div class=\"progress\">";
-			cuerpoModal += "<div class=\"progress-bar bg-danger progress-bar-striped progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.difficulty + "0%\" aria-valuenow=\"" + info.difficulty + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.difficulty + "</div>";
+			cuerpoModal += "<div class=\"progress-bar bg-danger progress-bar-animated\" role=\"progressbar\" style=\"width: " + info.difficulty + "0%\" aria-valuenow=\"" + info.difficulty + "0\" aria-valuemin=\"0\" aria-valuemax=\"100\">" + info.difficulty + "</div>";
 			cuerpoModal += "</div>";
 			cuerpoModal += "</div>";
 			// Fin Stats
@@ -348,19 +348,15 @@ function OrdenarPorNombreAscendente(x,y) {
 	return ((x[0] == y[0]) ? 0 : ((x[0] > y[0]) ? 1 : -1 ));
 }
 
-// function que imprime la version actual de la página
-function showVersion()
-{
-	return "Versión " + lol_current_version;
-}
 
 // Funcion que retorna el footer de la página
+// Footer version 1.0
 function footer()
 {
 	let html = ""; 
 	html += "<div class=\"row\" id=\"footer\">";
 	html += "<div class=\"col-12\">";
-	html +=	"<p style=\"text-align: center; color: white;\"> <i>" + showVersion(); + "</i> </p>";
+	html +=	"<p style=\"text-align: center; color: white;\"> <i> Versión " + lol_current_version + "</i> </p>";
 	html +=	"</div>";
 	html +=	"</div>"; 
 
@@ -393,6 +389,7 @@ function modal()
 }
 
 // function que genera el html de la barra de navegacion, el cual recibe el nombre de la pagina en la que se encuentra para indicar que pestaña es la que se encuentra activa
+// Navbar version 1.0
 function navbar(nombrePagina)
 {
 	let html = "";
@@ -405,11 +402,12 @@ function navbar(nombrePagina)
 	html += "<button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNavAltMarkup\" aria-controls=\"navbarNavAltMarkup\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">";
 	html += "<span class=\"navbar-toggler-icon\"></span>";
 	html += "</button>";
-	html += "<a class=\"navbar-brand col-2\" href=\"inicio.html\">Champion Browser</a>";
+	html += "<a class=\"navbar-brand col-2\" href=\"index.html\">Champion Browser</a>";
 	html += "<div class=\"collapse navbar-collapse col-3\" id=\"navbarNavAltMarkup\">";
 	html += "<div class=\"navbar-nav\">";
-	html += "<a class=\"nav-item nav-link inicio\" href=\"inicio.html\">Inicio</a>";
+	html += "<a class=\"nav-item nav-link index\" href=\"index.html\">Inicio</a>";
 	html += "<a class=\"nav-item nav-link champions\" href=\"champions.html\">Campeones</a>";
+	html += "<a class=\"nav-item nav-link testing\" href=\"testing.html\">Testing</a>";
 	html += "</div>";
 	html += "</div>";
 	html += "<div class=\"form-inline col-7\">";
@@ -426,8 +424,8 @@ function navbar(nombrePagina)
 	html += "<option value=\"ru\">Russia</option>";
 	html += "<option value=\"tr\">Turkey</option>";
 	html += "</select>";
-	html += "<input class=\"form-control col-6\" type=\"text\" placeholder=\"Nombre Invocador\">";
-	html += "<button class=\"btn btn-outline-success form-control col-2\" type=\"button\">Buscar</button>";
+	html += "<input class=\"form-control col-6\" id=\"txt_nombreInvocador\" maxLength=\"30\" type=\"text\" placeholder=\"Nombre Invocador\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-html=\"true\" data-placement=\"bottom\" data-trigger=\"manual\" title=\"Debe ingresar un nombre de invocador.\" />";
+	html += "<button class=\"btn btn-outline-success form-control col-2\" id=\"btnBuscar\" type=\"button\" onclick=\"javascript:obtieneIdInvocador();\">Buscar</button>";
 	html += "</div>";
 	html += "</nav>";
 	html += "<br/>";
@@ -446,7 +444,6 @@ function rotacionSemanal()
 	$.ajax({
 		url: url_championFreeToPlay,
 		type : "get",
-		async: true,
 		success : function(data) {
 			$.each(data.champions, function(index, value){
 				$.ajax({
@@ -454,7 +451,7 @@ function rotacionSemanal()
 					type: "get",
 					async: false,
 					success: function(campeon){
-						html += "<img src='" + url_championSquare + campeon.key + ".png' class=\"rounded\" style=\"width: 80px; height: auto;\" role=\"button\"  aria-hidden=\"true\" data-toggle=\"tooltip\" data-html=\"true\" data-placement=\"bottom\" title=\"<b>" + campeon.name + "</b><br/>" + campeon.title + "\"/>&nbsp;&nbsp;";
+						html += "<img src='" + url_championSquare + campeon.key + ".png' class=\"rounded\" style=\"width: 80px; height: auto;\" role=\"button\"  aria-hidden=\"true\" data-toggle=\"tooltip\" data-animation=\"false\" data-html=\"true\" data-placement=\"bottom\" title=\"<b>" + campeon.name + "</b><br/>" + campeon.title + "\"/>&nbsp;&nbsp;";
 					}, 
 					error: function(jqXHR, textStatus, errorThrown) {
 						console.log("algo salió mal");
@@ -475,6 +472,74 @@ function rotacionSemanal()
 function formatText(text)
 {
 	return text.replace("'", "&quot;");
+}
+
+// Esta funcion separa una cadena de texto por sus espacios en blanco, luego la vuelve a unir formateada con %20
+function formatURLText(text)
+{
+	var array = text.split(' ');
+	var finalText = "";
+	for (var i = 0; i < array.length; i++) {
+		
+		if(i==array.length-1)
+		{
+			finalText += array[i];
+		}
+		else
+		{
+			finalText += array[i] + "%20";
+		}
+
+	}
+
+	return finalText;
+	//return text.replace(" ", "%20");
+}
+
+function obtieneIdInvocador()
+{
+	// por ahora solo funcionara en la region de las 
+	// nombre de invocador ingresado
+	let nombreInvocador = $("#txt_nombreInvocador").val();
+	
+	if(nombreInvocador != "")
+	{
+		$("#txt_nombreInvocador").removeClass('danger');
+		$("#txt_nombreInvocador").tooltip('hide');
+
+		
+		$.getJSON(url_invocador_by_name + formatURLText(nombreInvocador) + '?api_key=' + key, function(result){
+			//el result tira la data que vendría siendo del success
+			console.log(result);
+		}).done(function(data){
+			//acá igual pero no cacho la diferencia ajsajsd
+			console.log(data);
+		}).fail(function(error){
+			//aquí te atrapa los errores
+			console.log(error);
+			$(".modal-title").html('Ups...');
+			$(".modal-body").html('<p>No hay ningun invocador con ese nombre.</p>');
+			$(".modal").modal('show');
+		});
+	}
+	else
+	{
+		$("#txt_nombreInvocador").addClass('danger');
+		$("#txt_nombreInvocador").tooltip('show');
+	}
+	
+}
+
+function getVarsUrl(url){
+    //var url= location.search.replace("?", "");
+    var url = url.replace("?","");
+    var arrUrl = url.split("&");
+    var urlObj={};   
+    for(var i=0; i<arrUrl.length; i++){
+        var x= arrUrl[i].split("=");
+        urlObj[x[0]]=x[1]
+    }
+    return urlObj;
 }
 
 
