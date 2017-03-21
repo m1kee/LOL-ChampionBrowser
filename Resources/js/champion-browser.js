@@ -509,11 +509,12 @@ function obtieneIdInvocador()
 
 		// ultima version de las pruebas pa hacer funcionar esta mierda xd
 		$.ajax({
-			url: url_invocador_by_name + formatURLText(nombreInvocador) + '?api_key=' + key,
+			url: url_invocador_by_name + formatURLText(nombreInvocador),
 			type: 'get',
+			data: {'api_key': key},
 			dataType: 'json',
-			success : function(data) {
-				console.log(data);
+			success : function(jsonp) {
+				console.log("im in");
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				switch (jqXHR.status)
@@ -537,11 +538,10 @@ function obtieneIdInvocador()
 
 				console.log(jqXHR);
 				console.log("textStatus: " + textStatus);
-				console.log("errorThrown: " + errorThrown);
-				
+				console.log("errorThrown: " + errorThrown);	
 			}
 		});
-		
+
 	}
 	else
 	{
@@ -550,6 +550,8 @@ function obtieneIdInvocador()
 	}
 	
 }
+
+
 
 function getVarsUrl(url){
     //var url= location.search.replace("?", "");
